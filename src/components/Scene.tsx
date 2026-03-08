@@ -12,12 +12,12 @@ export function Scene({ rotationRef, velocityRef }: SceneProps) {
     <div className="scene-container">
       <Canvas
         shadows
-        camera={{ position: [0, 3, 5], fov: 50 }}
+        camera={{ position: [0, 3, 6.5], fov: 50 }}
+        dpr={[1, 2]}
         gl={{
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.0,
           outputColorSpace: THREE.SRGBColorSpace,
-          pixelRatio: Math.min(window.devicePixelRatio, 2),
         }}
       >
         <ambientLight intensity={0.6} />

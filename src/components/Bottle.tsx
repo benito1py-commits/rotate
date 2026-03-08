@@ -10,19 +10,76 @@ interface BottleProps {
   velocityRef: React.RefObject<number>;
 }
 
+function createSpriteLabel(): THREE.CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 256;
+  const ctx = canvas.getContext("2d")!;
+
+  // Label background - Sprite green gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, 256);
+  grad.addColorStop(0, "#006b3f");
+  grad.addColorStop(0.5, "#008c4a");
+  grad.addColorStop(1, "#006b3f");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 512, 256);
+
+  // Yellow-green accent stripe
+  ctx.fillStyle = "#c8e600";
+  ctx.fillRect(0, 20, 512, 8);
+  ctx.fillRect(0, 228, 512, 8);
+
+  // "Sprite" text
+  ctx.fillStyle = "#c8e600";
+  ctx.font = "bold 80px Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("Sprite", 256, 120);
+
+  // Small subtitle
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "24px Arial, sans-serif";
+  ctx.fillText("Lemon-Lime", 256, 180);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  return texture;
+}
+
 export function Bottle({ rotationRef, velocityRef }: BottleProps) {
   const groupRef = useRef<THREE.Group>(null);
 
-  const glassMaterial = useMemo(
+  const plasticMaterial = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: "#2d8c5a",
+        color: "#a8e6a3",
         transparent: true,
-        opacity: 0.7,
-        roughness: 0.1,
-        metalness: 0.1,
+        opacity: 0.55,
+        roughness: 0.15,
+        metalness: 0.0,
         clearcoat: 1,
-        clearcoatRoughness: 0.05,
+        clearcoatRoughness: 0.03,
+        transmission: 0.3,
+        ior: 1.45,
+      }),
+    [],
+  );
+
+  const labelMaterial = useMemo(() => {
+    const texture = createSpriteLabel();
+    return new THREE.MeshStandardMaterial({
+      map: texture,
+      roughness: 0.4,
+      metalness: 0.05,
+    });
+  }, []);
+
+  const capMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: "#007a3d",
+        roughness: 0.3,
+        metalness: 0.2,
       }),
     [],
   );
@@ -43,30 +100,50 @@ export function Bottle({ rotationRef, velocityRef }: BottleProps) {
   });
 
   return (
-    <group ref={groupRef} rotation={[Math.PI / 2, 0, 0]}>
-      {/* Main body */}
-      <mesh position={[0, 0, 0]} castShadow material={glassMaterial}>
-        <cylinderGeometry args={[0.3, 0.3, 2, 32]} />
+    <group ref={groupRef} position={[0, 0, 0]}>
+      {/* Base - slightly wider bottom */}
+      <mesh position={[0, 0.05, 0]} castShadow material={plasticMaterial}>
+        <cylinderGeometry args={[0.38, 0.35, 0.1, 32]} />
       </mesh>
 
-      {/* Neck taper */}
-      <mesh position={[0, 1.3, 0]} castShadow material={glassMaterial}>
-        <cylinderGeometry args={[0.12, 0.3, 0.6, 32]} />
+      {/* Lower body - wider */}
+      <mesh position={[0, 0.6, 0]} castShadow material={plasticMaterial}>
+        <cylinderGeometry args={[0.38, 0.38, 1.0, 32]} />
+      </mesh>
+
+      {/* Main body with label */}
+      <mesh position={[0, 1.5, 0]} castShadow material={labelMaterial}>
+        <cylinderGeometry args={[0.37, 0.38, 0.8, 32]} />
+      </mesh>
+
+      {/* Upper body */}
+      <mesh position={[0, 2.15, 0]} castShadow material={plasticMaterial}>
+        <cylinderGeometry args={[0.35, 0.37, 0.5, 32]} />
+      </mesh>
+
+      {/* Shoulder taper */}
+      <mesh position={[0, 2.65, 0]} castShadow material={plasticMaterial}>
+        <cylinderGeometry args={[0.15, 0.35, 0.5, 32]} />
       </mesh>
 
       {/* Neck */}
-      <mesh position={[0, 1.9, 0]} castShadow material={glassMaterial}>
-        <cylinderGeometry args={[0.12, 0.12, 0.8, 32]} />
+      <mesh position={[0, 3.15, 0]} castShadow material={plasticMaterial}>
+        <cylinderGeometry args={[0.13, 0.15, 0.5, 32]} />
       </mesh>
 
-      {/* Lip */}
-      <mesh position={[0, 2.35, 0]} castShadow material={glassMaterial}>
-        <cylinderGeometry args={[0.15, 0.12, 0.1, 32]} />
+      {/* Neck ring */}
+      <mesh position={[0, 3.35, 0]} castShadow material={plasticMaterial}>
+        <cylinderGeometry args={[0.16, 0.16, 0.06, 32]} />
       </mesh>
 
-      {/* Bottom */}
-      <mesh position={[0, -1.05, 0]} castShadow material={glassMaterial}>
-        <cylinderGeometry args={[0.28, 0.3, 0.1, 32]} />
+      {/* Cap */}
+      <mesh position={[0, 3.55, 0]} castShadow material={capMaterial}>
+        <cylinderGeometry args={[0.15, 0.15, 0.2, 32]} />
+      </mesh>
+
+      {/* Cap top */}
+      <mesh position={[0, 3.66, 0]} castShadow material={capMaterial}>
+        <sphereGeometry args={[0.15, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2]} />
       </mesh>
     </group>
   );
