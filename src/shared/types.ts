@@ -8,7 +8,7 @@ export interface GameMeta {
   id: string;
   title: string;
   description: string;
-  emoji: string;
+  icon: string;
   color: string;
   path: string;
 }
