@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { HandLandmark } from "../hooks/useHandTracking";
+import type { HandLandmark } from "../types";
 
 interface HandTrackerProps {
   videoRef: React.RefObject<HTMLVideoElement | null>;
@@ -52,7 +52,6 @@ export function HandTracker({ videoRef, landmarks, ready }: HandTrackerProps) {
         const pb = hand[b];
         if (!pa || !pb) continue;
         ctx.beginPath();
-        // Mirror x coordinates since webcam is mirrored
         ctx.moveTo((1 - pa.x) * canvas.width, pa.y * canvas.height);
         ctx.lineTo((1 - pb.x) * canvas.width, pb.y * canvas.height);
         ctx.stroke();

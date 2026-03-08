@@ -25,10 +25,6 @@ export class GestureTracker {
     }
   }
 
-  /**
-   * Compute angular velocity (rad/s) of the finger around the screen center.
-   * Positive = counter-clockwise, negative = clockwise.
-   */
   getAngularVelocity(): number | null {
     if (this.samples.length < MIN_SAMPLES) return null;
 
@@ -49,12 +45,11 @@ export class GestureTracker {
       );
 
       let delta = currAngle - prevAngle;
-      // Normalize to [-PI, PI]
       if (delta > Math.PI) delta -= 2 * Math.PI;
       if (delta < -Math.PI) delta += 2 * Math.PI;
 
       totalAngularChange += delta;
-      totalTime += (curr.time - prev.time) / 1000; // ms → s
+      totalTime += (curr.time - prev.time) / 1000;
     }
 
     if (totalTime < 0.01) return null;

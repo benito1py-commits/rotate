@@ -11,6 +11,11 @@
       "sourceType": "github",
       "computedHash": "e08d49571071f0f54ef2a76fdfcb96c16673e4fda478067727def4659feb80ca"
     },
+    "threejs-pro": {
+      "source": "404kidwiz/claude-supercode-skills",
+      "sourceType": "github",
+      "computedHash": "dd5bdbbae244e6f18c0367638efa5cd7e9fc9273cf7ad29ddcacf217c212de25"
+    },
     "vercel-deploy": {
       "source": "supercent-io/skills-template",
       "sourceType": "github",

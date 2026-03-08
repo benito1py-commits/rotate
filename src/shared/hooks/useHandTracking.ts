@@ -3,12 +3,9 @@ import {
   HandLandmarker,
   FilesetResolver,
 } from "@mediapipe/tasks-vision";
+import type { HandLandmark } from "../types";
 
-export interface HandLandmark {
-  x: number;
-  y: number;
-  z: number;
-}
+export type { HandLandmark };
 
 export function useHandTracking() {
   const videoRef = useRef<HTMLVideoElement>(null);
