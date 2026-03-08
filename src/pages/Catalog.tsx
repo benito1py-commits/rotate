@@ -20,6 +20,14 @@ const GAMES: GameMeta[] = [
     color: "#ff6ec7",
     path: "/games/logo-mover",
   },
+  {
+    id: "zero-gravity",
+    title: "Gravedad Cero",
+    description: "Empuja el logo flotante con el dedo",
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="24" r="3" stroke="currentColor" stroke-width="1.5" opacity="0.6"/><path d="M24 12V6M24 42V36M12 24H6M42 24H36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/><path d="M16 16L12 12M32 32L36 36M16 32L12 36M32 16L36 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/><path d="M10 24C10 24 14 20 18 22M38 24C38 24 34 28 30 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/></svg>`,
+    color: "#00f0ff",
+    path: "/games/zero-gravity",
+  },
 ];
 
 export function Catalog() {
